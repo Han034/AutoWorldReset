@@ -1,0 +1,33 @@
+# WorldResetter Eklenti Ayarları
+
+# Sıfırlanacak dünyaların listesi.
+worlds-to-reset:
+  kaynak_dunyasi:
+    reset-interval-hours: 24
+    # --- YENİ (OPSİYONEL) ---
+    # Eğer eklenti güvenli bir kara parçası bulamazsa, oyuncunun ışınlanacağı
+    # acil durum koordinatları. Belirtmezseniz, eklenti bir platform inşa eder.
+    emergency-spawn:
+      x: 150
+      y: 75
+      z: -200
+# Sıfırlama işleminden önce yapılacak duyurular.
+announcements:
+  - '10m'
+  - '5m'
+  - '1m'
+  - '30s'
+  - '10s'
+
+# Dünyalar sıfırlanırken oyuncuların gönderileceği ana lobi/spawn dünyası.
+fallback-world: 'world'
+
+# --- YENİ AYARLAR ---
+# Geri sayım başladığında BossBar'ın kaç saniye görüneceği.
+bossbar-countdown-seconds: 60
+
+# Sohbet mesajları
+messages:
+  reset-starting: "&e&l[UYARI] &6{world} &edünyası için sıfırlama işlemi başlatılıyor!"
+  reset-imminent: "&c&l[DİKKAT] &6{world} &cdünyası şimdi sıfırlanıyor! Lobiye gönderiliyorsunuz..."
+  reset-success: "&a&l[BİLGİ] &6{world} &adünyası başarıyla sıfırlandı ve erişime açıldı!"

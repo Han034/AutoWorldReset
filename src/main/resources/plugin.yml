@@ -1,0 +1,32 @@
+# Eklentinizin adı. Sunucudaki /plugins listesinde görünür.
+name: AutoWorldReset
+
+# Eklentinizin sürümü.
+version: 1.0-SNAPSHOT
+
+# Eklentinizin ana sınıfının tam yolu. Bu yol yanlışsa eklenti hiç çalışmaz.
+main: com.forcestudio.autoWorldReset.AutoWorldReset
+
+# Eklentinin uyumlu olduğu API sürümü.
+api-version: '1.21'
+
+# Eklentinin yazarı.
+author: ForceStudio
+
+# Eklentinin kısa açıklaması.
+description: Belirtilen dünyaları otomatik olarak sıfırlar.
+
+# --- SORUNUN KAYNAĞI OLAN KISIM ---
+# Eklentinizin sunucuya kaydettiği komutlar.
+commands:
+  # Komutun adı. Bu, getCommand("...") içindekiyle birebir aynı olmalı.
+  worldreset:
+    # /help komutunda görünecek açıklama.
+    description: AutoWorldReset eklentisinin ana komutu.
+    # Komut yanlış kullanıldığında oyuncuya gösterilecek mesaj.
+    usage: /<command> <reload|reset|info>
+    # Bu komutu kullanmak için gerekli izin.
+    permission: worldresetter.admin
+  awradmin:
+    description: Yönetici panelini açar.
+    permission: worldresetter.admin

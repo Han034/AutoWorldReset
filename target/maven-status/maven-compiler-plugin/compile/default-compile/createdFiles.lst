@@ -1,0 +1,9 @@
+com\forcestudio\autoWorldReset\WorldChangeListener.class
+com\forcestudio\autoWorldReset\WorldResetManager.class
+com\forcestudio\autoWorldReset\AdminMenuCommand.class
+com\forcestudio\autoWorldReset\AutoWorldReset.class
+com\forcestudio\autoWorldReset\AutoWorldResetExpansion.class
+com\forcestudio\autoWorldReset\MenuClickListener.class
+com\forcestudio\autoWorldReset\WorldResetManager$1.class
+com\forcestudio\autoWorldReset\MenuManager.class
+com\forcestudio\autoWorldReset\ResetCommand.class
