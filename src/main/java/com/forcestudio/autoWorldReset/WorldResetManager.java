@@ -18,11 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class WorldResetManager {
@@ -34,6 +30,7 @@ public class WorldResetManager {
     // Aktif görevleri ve BossBar'ları takip etmek için
     private final Map<String, BossBar> activeBossBars = new HashMap<>();
     private final Map<String, BukkitTask> activeTasks = new HashMap<>();
+    private final Map<UUID, Long> protectedPlayers = new HashMap<>(); // Oyuncu UUID'si ve korumanın bitiş zamanı
 
     // Üzerinde doğulması güvenli olmayan zemin blokları
     private static final EnumSet<Material> UNSAFE_GROUND_MATERIALS = EnumSet.of(
@@ -387,5 +384,37 @@ public class WorldResetManager {
         if (lastReset == 0) return "Yakında";
         long nextReset = lastReset + intervalMillis;
         return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(nextReset));
+    }
+
+    // --- YENİ METOTLAR (WorldResetManager.java dosyasının içine herhangi bir yere ekleyin) ---
+
+    public void addProtectedPlayer(Player player, int durationSeconds) {
+        long protectionEndTime = System.currentTimeMillis() + (durationSeconds * 1000L);
+        protectedPlayers.put(player.getUniqueId(), protectionEndTime);
+
+        player.sendMessage(ChatColor.GREEN + "Bu dünyaya yeni giriş yaptığınız için " + durationSeconds + " saniye boyunca hasar almazsınız.");
+
+        // Belirtilen süre sonunda oyuncuyu korumadan çıkaran bir görev planla
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            // Oyuncu hala sunucudaysa ve koruma süresi hala geçerliyse kaldır
+            if (player.isOnline() && protectedPlayers.getOrDefault(player.getUniqueId(), 0L) == protectionEndTime) {
+                protectedPlayers.remove(player.getUniqueId());
+                player.sendMessage(ChatColor.RED + "Spawn korumanız sona erdi. Artık hasar alabilirsiniz!");
+            }
+        }, durationSeconds * 20L); // Saniyeyi tick'e çevir (1 saniye = 20 tick)
+    }
+
+    public boolean isPlayerProtected(Player player) {
+        if (!protectedPlayers.containsKey(player.getUniqueId())) {
+            return false;
+        }
+
+        // Koruma süresi dolmuş mu diye kontrol et
+        if (System.currentTimeMillis() > protectedPlayers.get(player.getUniqueId())) {
+            protectedPlayers.remove(player.getUniqueId()); // Süresi dolanı temizle
+            return false;
+        }
+
+        return true;
     }
 }

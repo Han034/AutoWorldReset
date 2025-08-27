@@ -24,7 +24,7 @@ public class AutoWorldReset extends JavaPlugin {
         // Tüm dünya sıfırlama mantığını yönetecek olan sınıf.
         this.worldResetManager = new WorldResetManager(this);
         // Tüm GUI (menü) işlemlerini yönetecek olan sınıf.
-        this.menuManager = new MenuManager(worldResetManager);
+        this.menuManager = new MenuManager(worldResetManager, this); // 'this' eklediğinizden emin olun.
 
         // --- 3. KOMUTLARI KAYDET ---
         // Eklentimizin komutlarını ilgili yönetici sınıflarına bağlıyoruz.
@@ -33,9 +33,10 @@ public class AutoWorldReset extends JavaPlugin {
 
         // --- 4. OLAY DİNLEYİCİLERİNİ (LISTENER) KAYDET ---
         // Oyuncuların dünya değiştirme olaylarını dinleyerek BossBar'ı doğru yönetmek için.
-        getServer().getPluginManager().registerEvents(new WorldChangeListener(worldResetManager), this);
+        getServer().getPluginManager().registerEvents(new WorldChangeListener(this, worldResetManager), this); // WorldChangeListener'a plugin referansını da veriyoruz.
         // Kendi kodladığımız menüdeki tıklama olaylarını dinlemek için.
         getServer().getPluginManager().registerEvents(new MenuClickListener(menuManager, worldResetManager, this), this);
+        getServer().getPluginManager().registerEvents(new DamageListener(worldResetManager), this); // YENİ: Hasar dinleyicisini kaydet
 
         // --- 5. OTOMATİK SIFIRLAMA ZAMANLAYICISINI BAŞLAT ---
         startResetCheckScheduler();

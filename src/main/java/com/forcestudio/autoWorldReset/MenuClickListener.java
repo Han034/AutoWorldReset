@@ -5,6 +5,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 public class MenuClickListener implements Listener {
 
@@ -20,41 +23,47 @@ public class MenuClickListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // Tıklanan envanterin başlığı bizim menümüzün başlığıyla aynı mı?
         if (!event.getView().getTitle().equals(menuManager.ADMIN_MENU_TITLE)) {
-            return; // Bizim menümüz değilse, hiçbir şey yapma.
+            return;
         }
 
-        // Oyuncunun envanterinden bir şey almasını/koymasını engelle.
         event.setCancelled(true);
 
-        // Tıklanan bir eşya var mı ve tıklayan kişi oyuncu mu?
-        if (event.getCurrentItem() == null || !(event.getWhoClicked() instanceof Player)) {
+        ItemStack clickedItem = event.getCurrentItem();
+        if (clickedItem == null || !(event.getWhoClicked() instanceof Player)) {
             return;
         }
 
         Player player = (Player) event.getWhoClicked();
+        ItemMeta meta = clickedItem.getItemMeta();
+        if (meta == null) return;
 
-        // Tıklanan slotun numarasına göre işlem yap.
-        switch (event.getSlot()) {
-            case 11: // Kaynak Dünyası Butonu
-                player.closeInventory();
-                player.sendMessage(ChatColor.GOLD + "Kaynak dünyası için manuel sıfırlama işlemi başlatılıyor...");
-                resetManager.resetWorld("kaynak");
-                break;
-            case 13: // Maden Dünyası Butonu
-                player.closeInventory();
-                player.sendMessage(ChatColor.GOLD + "Maden dünyası için manuel sıfırlama işlemi başlatılıyor...");
-                resetManager.resetWorld("maden_dunyasi");
-                break;
-            case 15: // Reload Butonu
-                player.closeInventory();
-                plugin.reloadConfig();
-                player.sendMessage(ChatColor.GREEN + "AutoWorldReset yapılandırması yeniden yüklendi.");
-                break;
-            default:
-                // Diğer slotlara tıklanırsa bir şey yapma
-                break;
+        // --- YENİ & AKILLI TIKLAMA MANTIĞI ---
+
+        // 1. Tıklanan eşyanın içinde "dünya adı" etiketi var mı?
+        if (meta.getPersistentDataContainer().has(MenuManager.WORLD_NAME_KEY, PersistentDataType.STRING)) {
+            String worldName = meta.getPersistentDataContainer().get(MenuManager.WORLD_NAME_KEY, PersistentDataType.STRING);
+
+            player.closeInventory();
+            player.sendMessage(ChatColor.GOLD + worldName + " dünyası için manuel sıfırlama işlemi başlatılıyor...");
+            resetManager.resetWorld(worldName);
+            return; // İşlem bitti.
+        }
+
+        // 2. Eğer dünya adı etiketi yoksa, "eylem" etiketi var mı?
+        if (meta.getPersistentDataContainer().has(MenuManager.ACTION_KEY, PersistentDataType.STRING)) {
+            String action = meta.getPersistentDataContainer().get(MenuManager.ACTION_KEY, PersistentDataType.STRING);
+
+            switch (action) {
+                case "reload_config":
+                    player.closeInventory();
+                    plugin.reloadConfig();
+                    player.sendMessage(ChatColor.GREEN + "AutoWorldReset yapılandırması yeniden yüklendi.");
+                    break;
+                case "close_menu":
+                    player.closeInventory();
+                    break;
+            }
         }
     }
 }

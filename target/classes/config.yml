@@ -26,6 +26,10 @@ fallback-world: 'world'
 # Geri sayım başladığında BossBar'ın kaç saniye görüneceği.
 bossbar-countdown-seconds: 60
 
+# Oyuncuların sıfırlanan bir dünyaya ilk ışınlandığında alacağı hasar koruması (saniye cinsinden).
+# Kapatmak için 0 yapın.
+spawn-protection-seconds: 180 # 3 dakika = 180 saniye
+
 # Sohbet mesajları
 messages:
   reset-starting: "&e&l[UYARI] &6{world} &edünyası için sıfırlama işlemi başlatılıyor!"
