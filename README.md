@@ -55,14 +55,14 @@ worlds-to-reset:
 
 # Sıfırlama öncesi duyurular
 announcements:
-  - '10m'
-  - '5m'
-  - '1m'
-  - '30s'
-  - '10s'
+  - "10m"
+  - "5m"
+  - "1m"
+  - "30s"
+  - "10s"
 
 # Ana lobi dünyası
-fallback-world: 'world'
+fallback-world: "world"
 
 # BossBar geri sayım süresi
 bossbar-countdown-seconds: 60
@@ -79,24 +79,24 @@ messages:
 
 ### Ayar Parametreleri
 
-| Parametre | Açıklama | Varsayılan |
-|-----------|----------|------------|
-| `reset-interval-hours` | Sıfırlama aralığı (saat) | 24 |
-| `emergency-spawn` | Acil durum spawn koordinatları | - |
-| `fallback-world` | Ana lobi dünyası | world |
-| `bossbar-countdown-seconds` | BossBar geri sayım süresi | 60 |
-| `spawn-protection-seconds` | Spawn koruma süresi | 180 |
+| Parametre                   | Açıklama                       | Varsayılan |
+| --------------------------- | ------------------------------ | ---------- |
+| `reset-interval-hours`      | Sıfırlama aralığı (saat)       | 24         |
+| `emergency-spawn`           | Acil durum spawn koordinatları | -          |
+| `fallback-world`            | Ana lobi dünyası               | world      |
+| `bossbar-countdown-seconds` | BossBar geri sayım süresi      | 60         |
+| `spawn-protection-seconds`  | Spawn koruma süresi            | 180        |
 
 ## 🎮 Komutlar
 
 ### Ana Komutlar
 
-| Komut | Açıklama | İzin |
-|-------|----------|------|
-| `/worldreset reload` | Yapılandırmayı yeniden yükler | `worldresetter.admin` |
+| Komut                       | Açıklama                          | İzin                  |
+| --------------------------- | --------------------------------- | --------------------- |
+| `/worldreset reload`        | Yapılandırmayı yeniden yükler     | `worldresetter.admin` |
 | `/worldreset reset <dünya>` | Belirtilen dünyayı hemen sıfırlar | `worldresetter.admin` |
-| `/worldreset info <dünya>` | Dünya hakkında bilgi gösterir | `worldresetter.admin` |
-| `/awradmin` | Yönetici panelini açar | `worldresetter.admin` |
+| `/worldreset info <dünya>`  | Dünya hakkında bilgi gösterir     | `worldresetter.admin` |
+| `/awradmin`                 | Yönetici panelini açar            | `worldresetter.admin` |
 
 ### Komut Örnekleri
 
@@ -116,18 +116,20 @@ messages:
 
 ## 🔒 İzinler
 
-| İzin | Açıklama | Varsayılan |
-|------|----------|------------|
-| `worldresetter.admin` | Tüm komutlara ve yönetici paneline erişim | op |
+| İzin                  | Açıklama                                  | Varsayılan |
+| --------------------- | ----------------------------------------- | ---------- |
+| `worldresetter.admin` | Tüm komutlara ve yönetici paneline erişim | op         |
 
 ## 🖼️ Ekran Görüntüleri
 
 ### Yönetici Paneli
+
 - Grafik arayüz ile kolay dünya yönetimi
 - Her dünya için detaylı bilgiler
 - Tek tıkla sıfırlama özelliği
 
 ### BossBar Geri Sayım
+
 - Görsel geri sayım göstergesi
 - Oyuncular için net bilgilendirme
 - Otomatik güncellenen süre gösterimi
@@ -224,6 +226,7 @@ Varsa ekran görüntüleri
 ## 📝 Değişiklik Günlüğü
 
 ### v1.0-SNAPSHOT
+
 - ✨ İlk sürüm yayınlandı
 - ⚡ Otomatik dünya sıfırlama özelliği
 - 🎮 Grafik yönetici paneli
