@@ -219,6 +219,13 @@ public class WorldResetManager {
                     newWorld.setSpawnLocation(safeSpawn);
                     plugin.getLogger().info(worldName + " için yeni doğma noktası ayarlandı: " + safeSpawn.toVector());
 
+                    // Dünya sıfırlandıktan sonra gamerule ayarla
+                    newWorld.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, 1);
+                    plugin.getLogger().info(worldName + " dünyası için playersSleepingPercentage gamerule'ı 1 olarak ayarlandı.");
+
+                    // Chunky plugini ile chunk yükleme işlemini başlat
+                    startChunkyForWorld(worldName);
+
                     setLastResetTime(worldName);
                     Bukkit.broadcastMessage(getMessage("reset-success").replace("{world}", worldName));
                     // Buradaki cleanup artık countdown task'i tarafından yapıldığı için kaldırıldı.
@@ -416,5 +423,36 @@ public class WorldResetManager {
         }
 
         return true;
+    }
+
+    //================================================================================
+    // CHUNKY PLUGIN ENTEGRASYONİ
+    //================================================================================
+
+    /**
+     * Chunky plugini ile belirtilen dünya için chunk yükleme işlemini başlatır
+     * @param worldName Chunk yükleme işlemi yapılacak dünyanın adı
+     */
+    private void startChunkyForWorld(String worldName) {
+        // Chunky plugininin yüklü olup olmadığını kontrol et
+        if (!Bukkit.getPluginManager().isPluginEnabled("Chunky")) {
+            plugin.getLogger().warning("Chunky plugin yüklü değil! " + worldName + " dünyası için chunk yükleme işlemi başlatılamadı.");
+            return;
+        }
+
+        // Chunky start komutu çalıştır (konsol komutu olarak)
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            String command = "chunky start " + worldName;
+            try {
+                boolean result = Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                if (result) {
+                    plugin.getLogger().info(worldName + " dünyası için Chunky chunk yükleme işlemi başarıyla başlatıldı.");
+                } else {
+                    plugin.getLogger().warning(worldName + " dünyası için Chunky chunk yükleme işlemi başlatılamadı. Komut başarısız oldu.");
+                }
+            } catch (Exception e) {
+                plugin.getLogger().severe(worldName + " dünyası için Chunky komutu çalıştırılırken hata oluştu: " + e.getMessage());
+            }
+        });
     }
 }
